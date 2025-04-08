@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,39 +76,30 @@
 <form id="salesForm">
   <label>Date:</label>
   <input type="date" name="date" required>
-
   <label>Contact Type:</label>
   <select name="contactType" required>
     <option value="Call">Call</option>
     <option value="Visit">Visit</option>
     <option value="WhatsApp">WhatsApp</option>
   </select>
-
   <label>Party Name:</label>
   <input type="text" name="partyName" required>
-
   <label>Actual Amount:</label>
   <input type="number" name="actualAmount" required>
-
   <label>Billing Amount:</label>
   <input type="number" name="billingAmount" required>
-
   <label>Amount:</label>
   <input type="number" name="amount" required>
-
   <label>Follow-up:</label>
   <input type="text" name="followUp">
-
   <label>Notes:</label>
   <textarea name="notes" rows="3"></textarea>
-
   <label>Status:</label>
   <select name="status" required>
     <option value="Pending">Pending</option>
     <option value="Done">Done</option>
     <option value="Ongoing">Ongoing</option>
   </select>
-
   <button type="submit">Submit</button>
 </form>
 
@@ -120,7 +110,7 @@
 
 <script>
   const form = document.getElementById('salesForm');
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyD7mPRW8buRSU1OuVc7pGp6ouxuudp93SCr-JAwKY/dev';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwpE2Am0Xz8cdclEXZvv2EWakXOKyi1WtqOvbdSjf_2aTA4CaK78xbDCjVLe6lJPM7W-w/exec';
 
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -130,11 +120,14 @@
 
     fetch(scriptURL, {
       method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(() => alert("✅ Submitted Successfully"))
+    .then(response => {
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.text();
+    })
+    .then(result => alert("✅ Submitted Successfully"))
     .catch(error => alert("❌ Submission failed: " + error.message));
 
     form.reset();
