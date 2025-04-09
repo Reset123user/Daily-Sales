@@ -2,136 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Sales Data Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f7f9;
-      margin: 0;
-      padding: 20px;
-    }
-    header {
-      background-color: #0066cc;
-      color: white;
-      padding: 15px 20px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-    form {
-      background: white;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.05);
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 14px;
-      background-color: #0066cc;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004c99;
-    }
-    .nav-links {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .nav-links a {
-      margin: 0 10px;
-      text-decoration: none;
-      background: #e2e6ea;
-      color: #333;
-      padding: 10px 15px;
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-    .nav-links a:hover {
-      background: #cfd4d9;
-    }
+    body { font-family: 'Poppins', sans-serif; margin: 0; background: #f4f7f9; }
+    nav { background: #0066cc; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
+    nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: 500; }
+    .hero { text-align: center; padding: 80px 20px; }
+    .hero h1 { font-size: 2.5rem; color: #0066cc; margin-bottom: 10px; }
+    .hero p { font-size: 1.2rem; color: #333; margin-bottom: 40px; }
+    .buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .buttons a { padding: 15px 25px; background: #0066cc; color: white; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.3s; }
+    .buttons a:hover { background: #004c99; }
+
+    /* Dashboard Styling */
+    .dashboard { text-align: center; background: white; max-width: 600px; margin: 40px auto; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+    .dashboard h2 { color: #0066cc; }
+    .dashboard p { font-size: 1.2rem; margin: 10px 0; }
   </style>
 </head>
 <body>
 
-<header>Daily Sales Data Form</header>
+<nav>
+  <div><strong>Sales Report App</strong></div>
+  <div>
+    <a href="sales-form.html">Form</a>
+    <a href="daily-report.html">Daily Report</a>
+    <a href="monthly-report.html">Monthly Report</a>
+  </div>
+</nav>
 
-<form id="salesForm">
-  <label>Date:</label>
-  <input type="date" name="date" required>
-  <label>Contact Type:</label>
-  <select name="contactType" required>
-    <option value="Call">Call</option>
-    <option value="Visit">Visit</option>
-    <option value="WhatsApp">WhatsApp</option>
-  </select>
-  <label>Party Name:</label>
-  <input type="text" name="partyName" required>
-  <label>Actual Amount:</label>
-  <input type="number" name="actualAmount" required>
-  <label>Billing Amount:</label>
-  <input type="number" name="billingAmount" required>
-  <label>Amount:</label>
-  <input type="number" name="amount" required>
-  <label>Follow-up:</label>
-  <input type="text" name="followUp">
-  <label>Notes:</label>
-  <textarea name="notes" rows="3"></textarea>
-  <label>Status:</label>
-  <select name="status" required>
-    <option value="Pending">Pending</option>
-    <option value="Done">Done</option>
-    <option value="Ongoing">Ongoing</option>
-  </select>
-  <button type="submit">Submit</button>
-</form>
+<section class="hero">
+  <h1>Welcome to the Sales Report Dashboard</h1>
+  <p>Track and manage your sales data with ease.</p>
+  <div class="buttons">
+    <a href="sales-form.html">➕ Add Sales Entry</a>
+    <a href="daily-report.html">📅 Daily Report</a>
+    <a href="monthly-report.html">📈 Monthly Report</a>
+  </div>
+</section>
 
-<div class="nav-links">
-  <a href="daily-report.html">View Daily Report</a>
-  <a href="monthly-report.html">View Monthly Report</a>
+<!-- Dashboard Summary -->
+<div class="dashboard">
+  <h2>Sales Summary</h2>
+  <p><strong>Total Entries:</strong> <span id="totalEntries">Loading...</span></p>
+  <p><strong>Total Amount:</strong> ₹<span id="totalAmount">Loading...</span></p>
 </div>
 
 <script>
-  const form = document.getElementById('salesForm');
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwpE2Am0Xz8cdclEXZvv2EWakXOKyi1WtqOvbdSjf_2aTA4CaK78xbDCjVLe6lJPM7W-w/exec';
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
+    authDomain: "salesreportapp-8a8e0.firebaseapp.com",
+    projectId: "salesreportapp-8a8e0",
+    storageBucket: "salesreportapp-8a8e0.appspot.com",
+    messagingSenderId: "298863217642",
+    appId: "1:298863217642:web:86654c5d8b4c4bcc6c8093",
+    measurementId: "G-GSBKB2PFJF"
+  };
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => data[key] = value);
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    fetch(scriptURL, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => {
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.text();
-    })
-    .then(result => alert("✅ Submitted Successfully"))
-    .catch(error => alert("❌ Submission failed: " + error.message));
+  // Fetch sales data summary
+  function updateDashboard() {
+    db.collection("salesData").get()
+      .then(snapshot => {
+        const records = snapshot.docs.map(doc => doc.data());
+        let totalEntries = records.length;
+        let totalAmount = 0;
 
-    form.reset();
-  });
+        records.forEach(item => {
+          totalAmount += Number(item.amount || 0);
+        });
+
+        // Update dashboard
+        document.getElementById("totalEntries").innerText = totalEntries;
+        document.getElementById("totalAmount").innerText = totalAmount.toLocaleString();
+      })
+      .catch(error => console.error("Error loading dashboard data:", error));
+  }
+
+  // Load Dashboard Data on Page Load
+  updateDashboard();
 </script>
 
 </body>

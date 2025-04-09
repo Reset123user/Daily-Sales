@@ -1,1 +1,118 @@
-<!-- Placeholder for monthly-report.html content -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Monthly Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f4f7f9; margin: 0; padding: 20px; }
+    header { background: #0066cc; color: white; padding: 15px; text-align: center; font-size: 1.5rem; }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
+    select, input { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
+    button { padding: 10px 16px; border: none; background: #0066cc; color: white; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #004c99; }
+    table { border-collapse: collapse; width: 100%; background: white; }
+    th, td { padding: 10px; border: 1px solid #ddd; }
+    th { background-color: #0066cc; color: white; }
+  </style>
+</head>
+<body>
+
+<header>Monthly Report</header>
+
+<div class="filter-bar">
+  <input type="date" id="filterDate" />
+  <select id="filterStatus">
+    <option value="">All Status</option>
+    <option value="Pending">Pending</option>
+    <option value="Done">Done</option>
+    <option value="Ongoing">Ongoing</option>
+  </select>
+  <select id="filterContact">
+    <option value="">All Contact Types</option>
+    <option value="Call">Call</option>
+    <option value="Visit">Visit</option>
+    <option value="WhatsApp">WhatsApp</option>
+  </select>
+  <input type="text" id="filterParty" placeholder="Search Party Name" />
+  <button onclick="applyFilters()">Search</button>
+  <button onclick="resetFilters()">Reset</button>
+</div>
+
+<table id="reportTable">
+  <thead>
+    <tr>
+      <th>Date</th><th>Party</th><th>Contact</th><th>Actual</th><th>Billing</th><th>Amount</th><th>Status</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
+    authDomain: "salesreportapp-8a8e0.firebaseapp.com",
+    projectId: "salesreportapp-8a8e0",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  let fullData = [];
+  db.collection("salesData").get().then(snapshot => {
+    fullData = snapshot.docs.map(doc => doc.data());
+
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    const filtered = fullData.filter(row => {
+      const d = new Date(row.date || row.timestamp);
+      const dateStr = d.toISOString().slice(0, 10);
+      return (d.getMonth() === month && d.getFullYear() === year);
+    });
+    fullData = filtered;
+    renderTable(fullData);
+  });
+
+  function renderTable(data) {
+    const tbody = document.querySelector("#reportTable tbody");
+    tbody.innerHTML = "";
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${row.date}</td><td>${row.partyName}</td><td>${row.contactType}</td>
+                      <td>${row.actualAmount}</td><td>${row.billingAmount}</td><td>${row.amount}</td><td>${row.status}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function applyFilters() {
+    const fDate = document.getElementById('filterDate').value;
+    const fStatus = document.getElementById('filterStatus').value.toLowerCase();
+    const fContact = document.getElementById('filterContact').value.toLowerCase();
+    const fParty = document.getElementById('filterParty').value.toLowerCase();
+
+    const filtered = fullData.filter(row => {
+      const dateMatch = !fDate || (row.date && row.date.includes(fDate));
+      const statusMatch = !fStatus || row.status.toLowerCase() === fStatus;
+      const contactMatch = !fContact || row.contactType.toLowerCase() === fContact;
+      const partyMatch = !fParty || row.partyName.toLowerCase().includes(fParty);
+      return dateMatch && statusMatch && contactMatch && partyMatch;
+    });
+    renderTable(filtered);
+  }
+
+  function resetFilters() {
+    document.getElementById('filterDate').value = "";
+    document.getElementById('filterStatus').value = "";
+    document.getElementById('filterContact').value = "";
+    document.getElementById('filterParty').value = "";
+    renderTable(fullData);
+  }
+</script>
+
+</body>
+</html>
