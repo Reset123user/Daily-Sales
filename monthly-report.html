@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Monthly Report</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
@@ -14,38 +16,40 @@
     select, input { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
     button { padding: 10px 16px; border: none; background: #0066cc; color: white; border-radius: 6px; cursor: pointer; }
     button:hover { background: #004c99; }
-    table { border-collapse: collapse; width: 100%; background: white; }
-    th, td { padding: 10px; border: 1px solid #ddd; }
+    table { border-collapse: collapse; width: 100%; background: white; font-size: 14px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
     th { background-color: #0066cc; color: white; }
+    .status-pending { background-color: #fff9c4; }
+    .status-done { background-color: #c8e6c9; }
+    .status-ongoing { background-color: #ffe0b2; }
+    #summary { margin: 20px 0; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
   </style>
 </head>
 <body>
-
 <header>Monthly Report</header>
 
 <div class="filter-bar">
-  <input type="date" id="filterDate" />
+  <input type="date" id="filterFrom" placeholder="From" />
+  <input type="date" id="filterTo" placeholder="To" />
   <select id="filterStatus">
     <option value="">All Status</option>
     <option value="Pending">Pending</option>
     <option value="Done">Done</option>
     <option value="Ongoing">Ongoing</option>
   </select>
-  <select id="filterContact">
-    <option value="">All Contact Types</option>
-    <option value="Call">Call</option>
-    <option value="Visit">Visit</option>
-    <option value="WhatsApp">WhatsApp</option>
-  </select>
   <input type="text" id="filterParty" placeholder="Search Party Name" />
   <button onclick="applyFilters()">Search</button>
   <button onclick="resetFilters()">Reset</button>
+  <button onclick="exportToExcel()">Export</button>
 </div>
+
+<div id="summary"></div>
 
 <table id="reportTable">
   <thead>
     <tr>
-      <th>Date</th><th>Party</th><th>Contact</th><th>Actual</th><th>Billing</th><th>Amount</th><th>Status</th>
+      <th>Date</th><th>Party</th><th>Contact</th><th>Location</th><th>Sales Type</th><th>Order Taken</th>
+      <th>Order Value</th><th>Payment</th><th>Payment Mode</th><th>Customer Type</th><th>Follow-up</th><th>Status</th><th>Edit</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -59,58 +63,104 @@
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-
   let fullData = [];
-  db.collection("salesData").get().then(snapshot => {
-    fullData = snapshot.docs.map(doc => doc.data());
 
-    const now = new Date();
-    const today = now.toISOString().slice(0, 10);
-    const month = now.getMonth();
-    const year = now.getFullYear();
-
-    const filtered = fullData.filter(row => {
-      const d = new Date(row.date || row.timestamp);
-      const dateStr = d.toISOString().slice(0, 10);
-      return (d.getMonth() === month && d.getFullYear() === year);
+  document.addEventListener('DOMContentLoaded', () => {
+    db.collection("salesData").get().then(snapshot => {
+      fullData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderTable(fullData);
     });
-    fullData = filtered;
-    renderTable(fullData);
   });
 
   function renderTable(data) {
     const tbody = document.querySelector("#reportTable tbody");
     tbody.innerHTML = "";
+    let totalVisits = data.length, orders = 0, revenue = 0;
+
     data.forEach(row => {
+      if ((row.orderTaken || '').toLowerCase() === 'yes') orders++;
+      revenue += parseFloat(row.paymentCollected || 0);
+
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${row.date}</td><td>${row.partyName}</td><td>${row.contactType}</td>
-                      <td>${row.actualAmount}</td><td>${row.billingAmount}</td><td>${row.amount}</td><td>${row.status}</td>`;
+      const status = row.status || "Pending";
+      const statusClass = getStatusClass(status);
+      tr.innerHTML = `
+        <td>${row.date || ""}</td><td>${row.partyName || ""}</td><td>${row.contactType || ""}</td><td>${row.locationVisited || ""}</td>
+        <td>${row.salesType || ""}</td><td>${row.orderTaken || ""}</td><td>${row.orderValue || ""}</td>
+        <td>${row.paymentCollected || ""}</td><td>${row.paymentMode || ""}</td><td>${row.customerType || ""}</td><td>${row.nextFollowUp || ""}</td>
+        <td class="${statusClass}" id="status-${row.id}">${status}</td>
+        <td><button onclick="editStatus('${row.id}', '${status}')">Edit</button></td>
+      `;
       tbody.appendChild(tr);
     });
+
+    document.getElementById("summary").innerHTML = `
+      <strong>Total Visits:</strong> ${totalVisits} |
+      <strong>Orders Taken:</strong> ${orders} |
+      <strong>Total Revenue:</strong> ₹${revenue.toFixed(2)}
+    `;
+  }
+
+  function getStatusClass(status) {
+    switch ((status || "").toLowerCase()) {
+      case "done": return "status-done";
+      case "pending": return "status-pending";
+      case "ongoing": return "status-ongoing";
+      default: return "";
+    }
+  }
+
+  function editStatus(id, current) {
+    const cell = document.getElementById("status-" + id);
+    const dropdown = document.createElement("select");
+    ["Pending", "Done", "Ongoing"].forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s; opt.textContent = s;
+      if (s === current) opt.selected = true;
+      dropdown.appendChild(opt);
+    });
+    const btn = document.createElement("button");
+    btn.textContent = "Update";
+    btn.onclick = () => {
+      const newVal = dropdown.value;
+      db.collection("salesData").doc(id).update({ status: newVal }).then(() => {
+        cell.textContent = newVal;
+        cell.className = getStatusClass(newVal);
+      });
+    };
+    cell.innerHTML = "";
+    cell.appendChild(dropdown);
+    cell.appendChild(btn);
   }
 
   function applyFilters() {
-    const fDate = document.getElementById('filterDate').value;
-    const fStatus = document.getElementById('filterStatus').value.toLowerCase();
-    const fContact = document.getElementById('filterContact').value.toLowerCase();
-    const fParty = document.getElementById('filterParty').value.toLowerCase();
+    const from = document.getElementById('filterFrom').value;
+    const to = document.getElementById('filterTo').value;
+    const status = document.getElementById('filterStatus').value.toLowerCase();
+    const party = document.getElementById('filterParty').value.toLowerCase();
 
     const filtered = fullData.filter(row => {
-      const dateMatch = !fDate || (row.date && row.date.includes(fDate));
-      const statusMatch = !fStatus || row.status.toLowerCase() === fStatus;
-      const contactMatch = !fContact || row.contactType.toLowerCase() === fContact;
-      const partyMatch = !fParty || row.partyName.toLowerCase().includes(fParty);
-      return dateMatch && statusMatch && contactMatch && partyMatch;
+      const rowDate = row.date || "";
+      const dateOK = (!from || rowDate >= from) && (!to || rowDate <= to);
+      const statusOK = !status || (row.status || "").toLowerCase() === status;
+      const partyOK = !party || (row.partyName || "").toLowerCase().includes(party);
+      return dateOK && statusOK && partyOK;
     });
     renderTable(filtered);
   }
 
   function resetFilters() {
-    document.getElementById('filterDate').value = "";
+    document.getElementById('filterFrom').value = "";
+    document.getElementById('filterTo').value = "";
     document.getElementById('filterStatus').value = "";
-    document.getElementById('filterContact').value = "";
     document.getElementById('filterParty').value = "";
     renderTable(fullData);
+  }
+
+  function exportToExcel() {
+    const table = document.getElementById("reportTable");
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Monthly Report" });
+    XLSX.writeFile(wb, `Monthly-Report-${new Date().toISOString().slice(0,10)}.xlsx`);
   }
 </script>
 

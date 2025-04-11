@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales Dashboard</title>
+  <title>Sreepadma Sales Report</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
     body { font-family: 'Poppins', sans-serif; margin: 0; background: #f4f7f9; }
     nav { background: #0066cc; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; color: white; }
@@ -18,11 +15,6 @@
     .buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
     .buttons a { padding: 15px 25px; background: #0066cc; color: white; border-radius: 8px; font-size: 1rem; text-decoration: none; transition: background 0.3s; }
     .buttons a:hover { background: #004c99; }
-
-    /* Dashboard Styling */
-    .dashboard { text-align: center; background: white; max-width: 600px; margin: 40px auto; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
-    .dashboard h2 { color: #0066cc; }
-    .dashboard p { font-size: 1.2rem; margin: 10px 0; }
   </style>
 </head>
 <body>
@@ -37,7 +29,7 @@
 </nav>
 
 <section class="hero">
-  <h1>Welcome to the Sales Report Dashboard</h1>
+  <h1>Sreepadma Sales Report</h1>
   <p>Track and manage your sales data with ease.</p>
   <div class="buttons">
     <a href="sales-form.html">➕ Add Sales Entry</a>
@@ -46,51 +38,6 @@
   </div>
 </section>
 
-<!-- Dashboard Summary -->
-<div class="dashboard">
-  <h2>Sales Summary</h2>
-  <p><strong>Total Entries:</strong> <span id="totalEntries">Loading...</span></p>
-  <p><strong>Total Amount:</strong> ₹<span id="totalAmount">Loading...</span></p>
-</div>
-
-<script>
-  // Firebase Configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
-    authDomain: "salesreportapp-8a8e0.firebaseapp.com",
-    projectId: "salesreportapp-8a8e0",
-    storageBucket: "salesreportapp-8a8e0.appspot.com",
-    messagingSenderId: "298863217642",
-    appId: "1:298863217642:web:86654c5d8b4c4bcc6c8093",
-    measurementId: "G-GSBKB2PFJF"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // Fetch sales data summary
-  function updateDashboard() {
-    db.collection("salesData").get()
-      .then(snapshot => {
-        const records = snapshot.docs.map(doc => doc.data());
-        let totalEntries = records.length;
-        let totalAmount = 0;
-
-        records.forEach(item => {
-          totalAmount += Number(item.amount || 0);
-        });
-
-        // Update dashboard
-        document.getElementById("totalEntries").innerText = totalEntries;
-        document.getElementById("totalAmount").innerText = totalAmount.toLocaleString();
-      })
-      .catch(error => console.error("Error loading dashboard data:", error));
-  }
-
-  // Load Dashboard Data on Page Load
-  updateDashboard();
-</script>
-
 </body>
 </html>
+

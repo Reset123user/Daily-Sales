@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +15,8 @@
     select, input { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
     button { padding: 10px 16px; border: none; background: #0066cc; color: white; border-radius: 6px; cursor: pointer; }
     button:hover { background: #004c99; }
-    table { border-collapse: collapse; width: 100%; background: white; }
-    th, td { padding: 10px; border: 1px solid #ddd; }
+    table { border-collapse: collapse; width: 100%; background: white; font-size: 12px; }
+    th, td { padding: 8px; border: 1px solid #ddd; text-align: left; vertical-align: top; }
     th { background-color: #0066cc; color: white; }
   </style>
 </head>
@@ -45,7 +46,10 @@
 <table id="reportTable">
   <thead>
     <tr>
-      <th>Date</th><th>Party</th><th>Contact</th><th>Actual</th><th>Billing</th><th>Amount</th><th>Status</th>
+      <th>Date</th><th>Party</th><th>Contact</th><th>Status</th><th>Actual</th><th>Billing</th>
+      <th>Location</th><th>Time In</th><th>Time Out</th><th>Sales Type</th><th>Order Taken</th>
+      <th>Order Value</th><th>Delivery Date</th><th>Payment</th><th>Mode</th>
+      <th>Next Follow-Up</th><th>Customer Type</th><th>Reminder</th><th>Follow-Up</th><th>Notes</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -63,18 +67,9 @@
   let fullData = [];
   db.collection("salesData").get().then(snapshot => {
     fullData = snapshot.docs.map(doc => doc.data());
-
     const now = new Date();
     const today = now.toISOString().slice(0, 10);
-    const month = now.getMonth();
-    const year = now.getFullYear();
-
-    const filtered = fullData.filter(row => {
-      const d = new Date(row.date || row.timestamp);
-      const dateStr = d.toISOString().slice(0, 10);
-      return row.date === today || dateStr === today;
-    });
-    fullData = filtered;
+    fullData = fullData.filter(row => (row.date || '').includes(today));
     renderTable(fullData);
   });
 
@@ -83,8 +78,28 @@
     tbody.innerHTML = "";
     data.forEach(row => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${row.date}</td><td>${row.partyName}</td><td>${row.contactType}</td>
-                      <td>${row.actualAmount}</td><td>${row.billingAmount}</td><td>${row.amount}</td><td>${row.status}</td>`;
+      tr.innerHTML = `
+        <td>${row.date || ""}</td>
+        <td>${row.partyName || ""}</td>
+        <td>${row.contactType || ""}</td>
+        <td>${row.status || ""}</td>
+        <td>${row.actualAmount || 0}</td>
+        <td>${row.billingAmount || 0}</td>
+        <td>${row.locationVisited || ""}</td>
+        <td>${row.timeIn || ""}</td>
+        <td>${row.timeOut || ""}</td>
+        <td>${row.salesType || ""}</td>
+        <td>${row.orderTaken || ""}</td>
+        <td>${row.orderValue || ""}</td>
+        <td>${row.deliveryDate || ""}</td>
+        <td>${row.paymentCollected || 0}</td>
+        <td>${row.paymentMode || ""}</td>
+        <td>${row.nextFollowUp || ""}</td>
+        <td>${row.customerType || ""}</td>
+        <td>${row.followUpReminder || ""}</td>
+        <td>${row.followUp || ""}</td>
+        <td>${row.notes || ""}</td>
+      `;
       tbody.appendChild(tr);
     });
   }
@@ -97,9 +112,9 @@
 
     const filtered = fullData.filter(row => {
       const dateMatch = !fDate || (row.date && row.date.includes(fDate));
-      const statusMatch = !fStatus || row.status.toLowerCase() === fStatus;
-      const contactMatch = !fContact || row.contactType.toLowerCase() === fContact;
-      const partyMatch = !fParty || row.partyName.toLowerCase().includes(fParty);
+      const statusMatch = !fStatus || (row.status && row.status.toLowerCase() === fStatus);
+      const contactMatch = !fContact || (row.contactType && row.contactType.toLowerCase() === fContact);
+      const partyMatch = !fParty || (row.partyName && row.partyName.toLowerCase().includes(fParty));
       return dateMatch && statusMatch && contactMatch && partyMatch;
     });
     renderTable(filtered);

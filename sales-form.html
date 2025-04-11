@@ -5,71 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Sales Data Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Firebase SDK (compat versions for ease of use) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
-    body { 
-      font-family: 'Poppins', sans-serif; 
-      background: #f4f7f9; 
-      margin: 0; 
-      padding: 20px; 
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f7f9;
+      margin: 0;
+      padding: 20px;
     }
-    header { 
-      background-color: #0066cc; 
-      color: white; 
-      padding: 15px; 
-      text-align: center; 
-      font-size: 1.5rem; 
-      font-weight: 600; 
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
     }
-    form { 
-      background: white; 
-      max-width: 600px; 
-      margin: 40px auto; 
-      padding: 30px; 
-      border-radius: 12px; 
-      box-shadow: 0 0 15px rgba(0,0,0,0.05); 
+    form {
+      background: white;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
     }
-    input, select, textarea { 
-      width: 100%; 
-      padding: 12px; 
-      margin-top: 10px; 
-      border-radius: 8px; 
-      border: 1px solid #ccc; 
-      font-size: 14px; 
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
     }
-    button { 
-      margin-top: 20px; 
-      width: 100%; 
-      padding: 14px; 
-      background-color: #0066cc; 
-      color: white; 
-      font-size: 16px; 
-      border: none; 
-      border-radius: 8px; 
-      cursor: pointer; 
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #0066cc;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    button:hover { 
-      background-color: #004c99; 
+    button:hover {
+      background-color: #004c99;
     }
-    .nav-links { 
-      display: flex; 
-      justify-content: center; 
-      margin-top: 20px; 
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
-    .nav-links a { 
-      margin: 0 10px; 
-      text-decoration: none; 
-      background: #e2e6ea; 
-      color: #333; 
-      padding: 10px 15px; 
-      border-radius: 6px; 
-      transition: 0.3s; 
+    .nav-links a {
+      margin: 0 10px;
+      text-decoration: none;
+      background: #e2e6ea;
+      color: #333;
+      padding: 10px 15px;
+      border-radius: 6px;
+      transition: 0.3s;
     }
-    .nav-links a:hover { 
-      background: #cfd4d9; 
+    .nav-links a:hover {
+      background: #cfd4d9;
     }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -78,39 +78,92 @@
   <form id="salesForm">
     <label>Date:</label>
     <input type="date" name="date" required>
-    
+
     <label>Contact Type:</label>
     <select name="contactType" required>
       <option value="Call">Call</option>
       <option value="Visit">Visit</option>
       <option value="WhatsApp">WhatsApp</option>
     </select>
-    
+
     <label>Party Name:</label>
     <input type="text" name="partyName" required>
-    
+
     <label>Actual Amount:</label>
     <input type="number" name="actualAmount" required>
-    
+
     <label>Billing Amount:</label>
     <input type="number" name="billingAmount" required>
-    
-    <label>Amount:</label>
-    <input type="number" name="amount" required>
-    
+
+    <label>Location Visited:</label>
+    <input type="text" name="locationVisited" required>
+
+    <!-- New Fields -->
+    <label>Visit Time In:</label>
+    <input type="time" name="timeIn" required>
+
+    <label>Visit Time Out:</label>
+    <input type="time" name="timeOut" required>
+
+    <label>Sales Type:</label>
+    <select name="salesType" required>
+      <option value="New Order">New Order</option>
+      <option value="Payment Collection">Payment Collection</option>
+      <option value="Follow-up">Follow-up</option>
+      <option value="Enquiry">Enquiry</option>
+    </select>
+
+    <label>Order Taken:</label>
+    <select name="orderTaken" id="orderTaken" required>
+      <option value="No">No</option>
+      <option value="Yes">Yes</option>
+    </select>
+
+    <div id="orderDetails" class="hidden">
+      <label>Order Value:</label>
+      <input type="number" name="orderValue">
+      <label>Expected Delivery Date:</label>
+      <input type="date" name="deliveryDate">
+    </div>
+
+    <label>Payment Collected:</label>
+    <input type="number" name="paymentCollected">
+
+    <label>Payment Mode:</label>
+    <select name="paymentMode">
+      <option value="">-- Select Mode --</option>
+      <option value="Cash">Cash</option>
+      <option value="UPI">UPI</option>
+      <option value="Cheque">Cheque</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+
+    <label>Next Follow-Up Date:</label>
+    <input type="date" name="nextFollowUp">
+
+    <label>Customer Type:</label>
+    <select name="customerType" required>
+      <option value="New">New</option>
+      <option value="Existing">Existing</option>
+      <option value="Potential">Potential</option>
+    </select>
+
+    <label>Reminder Notes for Follow-Up:</label>
+    <textarea name="followUpReminder" rows="2"></textarea>
+
     <label>Follow-up:</label>
     <input type="text" name="followUp">
-    
+
     <label>Notes:</label>
     <textarea name="notes" rows="3"></textarea>
-    
+
     <label>Status:</label>
-    <select name="status" required>
+    <select name="status" id="statusDropdown" required>
       <option value="Pending">Pending</option>
       <option value="Done">Done</option>
       <option value="Ongoing">Ongoing</option>
     </select>
-    
+
     <button type="submit">Submit</button>
   </form>
 
@@ -121,26 +174,49 @@
   </div>
 
   <script>
-    // Correct Firebase configuration.
     const firebaseConfig = {
       apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
       authDomain: "salesreportapp-8a8e0.firebaseapp.com",
       projectId: "salesreportapp-8a8e0",
-      storageBucket: "salesreportapp-8a8e0.appspot.com", // Corrected bucket name
+      storageBucket: "salesreportapp-8a8e0.appspot.com",
       messagingSenderId: "298863217642",
       appId: "1:298863217642:web:86654c5d8b4c4bcc6c8093",
       measurementId: "G-GSBKB2PFJF"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Listen for form submission
     const form = document.getElementById('salesForm');
+    const statusDropdown = document.getElementById("statusDropdown");
+    const orderTaken = document.getElementById("orderTaken");
+    const orderDetails = document.getElementById("orderDetails");
+
+    function updateStatusColor() {
+      const value = statusDropdown.value;
+      switch (value) {
+        case "Done":
+          statusDropdown.style.backgroundColor = "#c8e6c9";
+          break;
+        case "Pending":
+          statusDropdown.style.backgroundColor = "#fff9c4";
+          break;
+        case "Ongoing":
+          statusDropdown.style.backgroundColor = "#ffe0b2";
+          break;
+        default:
+          statusDropdown.style.backgroundColor = "white";
+      }
+    }
+
+    statusDropdown.addEventListener("change", updateStatusColor);
+    updateStatusColor();
+
+    orderTaken.addEventListener("change", () => {
+      orderDetails.classList.toggle("hidden", orderTaken.value !== "Yes");
+    });
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      // Gather form data using FormData API
       const formData = new FormData(form);
       const data = {};
       const now = new Date();
@@ -148,16 +224,16 @@
       formData.forEach((value, key) => {
         data[key] = value;
       });
-      
-      // Enforce a date entry if none exists, and capture a timestamp.
+
       data.date = data.date || now.toISOString().slice(0, 10);
       data.timestamp = now.toISOString();
 
-      // Save the document to the "salesData" collection.
       db.collection("salesData").add(data)
         .then(() => {
           alert("✅ Submitted successfully!");
           form.reset();
+          updateStatusColor();
+          orderDetails.classList.add("hidden");
         })
         .catch((err) => {
           console.error("Error saving to Firestore:", err);
