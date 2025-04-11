@@ -6,137 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Report</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
-  
-
-  
-
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value)
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload(); // Reload to fetch updated data
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
-
-  
-
-  
-
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      contactType: document.getElementById("editContact").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value),
-      locationVisited: document.getElementById("editLocation").value,
-      timeIn: document.getElementById("editTimeIn").value,
-      timeOut: document.getElementById("editTimeOut").value,
-      salesType: document.getElementById("editSalesType").value,
-      orderTaken: document.getElementById("editOrderTaken").value,
-      orderValue: parseFloat(document.getElementById("editOrderValue").value),
-      deliveryDate: document.getElementById("editDeliveryDate").value,
-      paymentCollected: parseFloat(document.getElementById("editPayment").value),
-      paymentMode: document.getElementById("editPaymentMode").value,
-      nextFollowUp: document.getElementById("editNextFollowUp").value,
-      customerType: document.getElementById("editCustomerType").value,
-      followUpReminder: document.getElementById("editReminder").value,
-      followUp: document.getElementById("editFollowUp").value,
-      notes: document.getElementById("editNotes").value
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload();
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
-</script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js">
-  
-
-  
-
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value)
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload(); // Reload to fetch updated data
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
-
-  
-
-  
-
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      contactType: document.getElementById("editContact").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value),
-      locationVisited: document.getElementById("editLocation").value,
-      timeIn: document.getElementById("editTimeIn").value,
-      timeOut: document.getElementById("editTimeOut").value,
-      salesType: document.getElementById("editSalesType").value,
-      orderTaken: document.getElementById("editOrderTaken").value,
-      orderValue: parseFloat(document.getElementById("editOrderValue").value),
-      deliveryDate: document.getElementById("editDeliveryDate").value,
-      paymentCollected: parseFloat(document.getElementById("editPayment").value),
-      paymentMode: document.getElementById("editPaymentMode").value,
-      nextFollowUp: document.getElementById("editNextFollowUp").value,
-      customerType: document.getElementById("editCustomerType").value,
-      followUpReminder: document.getElementById("editReminder").value,
-      followUp: document.getElementById("editFollowUp").value,
-      notes: document.getElementById("editNotes").value
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload();
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
-</script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <style>
     body { font-family: 'Poppins', sans-serif; background: #f4f7f9; margin: 0; padding: 20px; }
-    header { background: #0066cc; color: white; padding: 15px; text-align: center; font-size: 1.5rem; }
+    header { background: #0066cc; color: white; padding: 15px; text-align: center; font-size: 1.5rem; position: relative; }
+    .home-button {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      background: white;
+      color: #0066cc;
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      border: 2px solid #0066cc;
+    }
+    .home-button:hover {
+      background: #0066cc;
+      color: white;
+    }
     .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
     select, input { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
     button { padding: 10px 16px; border: none; background: #0066cc; color: white; border-radius: 6px; cursor: pointer; }
@@ -148,18 +38,39 @@
 </head>
 <body>
 
-<header>Daily Report</header>
+<header>
+  Daily Report
+  <a href="index.html" class="home-button">Home</a>
+</header>
+
+<!-- Filter bar removed -->
+  <input type="date" id="filterDate" />
+  <select id="filterStatus">
+    <option value="">All Status</option>
+    <option value="Pending">Pending</option>
+    <option value="Done">Done</option>
+    <option value="Ongoing">Ongoing</option>
+  </select>
+  <select id="filterContact">
+    <option value="">All Contact Types</option>
+    <option value="Call">Call</option>
+    <option value="Visit">Visit</option>
+    <option value="WhatsApp">WhatsApp</option>
+  </select>
+  <input type="text" id="filterParty" placeholder="Search Party Name" />
+  <button onclick="applyFilters()">Search</button>
+  <button onclick="resetFilters()">Reset</button>
+</div>
 
 
-  
-
+<h2 style="text-align:center; margin-bottom: 10px;">Reports for 2025-04-11</h2>
 <table id="reportTable">
   <thead>
     <tr>
       <th>Date</th><th>Party</th><th>Contact</th><th>Status</th><th>Actual</th><th>Billing</th>
       <th>Location</th><th>Time In</th><th>Time Out</th><th>Sales Type</th><th>Order Taken</th>
       <th>Order Value</th><th>Delivery Date</th><th>Payment</th><th>Mode</th>
-      <th>Next Follow-Up</th><th>Customer Type</th><th>Reminder</th><th>Follow-Up</th><th>Notes</th><th>Edit</th>
+      <th>Next Follow-Up</th><th>Customer Type</th><th>Reminder</th><th>Follow-Up</th><th>Notes</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -176,10 +87,8 @@
 
   let fullData = [];
   db.collection("salesData").get().then(snapshot => {
-    fullData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    const now = new Date();
-    const today = now.toISOString().slice(0, 10);
-    fullData = fullData.filter(row => (row.date || '').includes(today));
+    fullData = snapshot.docs.map(doc => doc.data());
+    fullData = fullData.filter(row => (row.date || '').includes('2025-04-11'));
     renderTable(fullData);
   });
 
@@ -208,75 +117,37 @@
         <td>${row.customerType || ""}</td>
         <td>${row.followUpReminder || ""}</td>
         <td>${row.followUp || ""}</td>
-        <td>${row.notes || \"\"}</td><td><a href='edit-entry.html?id=${row.id}'>Edit</a></td><td><a href='edit-entry.html?id=${row.id}'>Edit</a></td>`;
+        <td>${row.notes || ""}</td>
+      `;
       tbody.appendChild(tr);
     });
   }
 
-      
+  function applyFilters() {
+    const fDate = document.getElementById('filterDate').value;
+    const fStatus = document.getElementById('filterStatus').value.toLowerCase();
+    const fContact = document.getElementById('filterContact').value.toLowerCase();
+    const fParty = document.getElementById('filterParty').value.toLowerCase();
 
-  
+    const filtered = fullData.filter(row => {
+      const dateMatch = !fDate || (row.date && row.date.includes(fDate));
+      const statusMatch = !fStatus || (row.status && row.status.toLowerCase() === fStatus);
+      const contactMatch = !fContact || (row.contactType && row.contactType.toLowerCase() === fContact);
+      const partyMatch = !fParty || (row.partyName && row.partyName.toLowerCase().includes(fParty));
+      return dateMatch && statusMatch && contactMatch && partyMatch;
+    });
+    renderTable(filtered);
+  }
 
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value)
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload(); // Reload to fetch updated data
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
-
-  
-
-  
-
-  document.getElementById("editForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const id = document.getElementById("editId").value;
-    const updatedData = {
-      partyName: document.getElementById("editParty").value,
-      contactType: document.getElementById("editContact").value,
-      status: document.getElementById("editStatus").value,
-      actualAmount: parseFloat(document.getElementById("editActual").value),
-      billingAmount: parseFloat(document.getElementById("editBilling").value),
-      locationVisited: document.getElementById("editLocation").value,
-      timeIn: document.getElementById("editTimeIn").value,
-      timeOut: document.getElementById("editTimeOut").value,
-      salesType: document.getElementById("editSalesType").value,
-      orderTaken: document.getElementById("editOrderTaken").value,
-      orderValue: parseFloat(document.getElementById("editOrderValue").value),
-      deliveryDate: document.getElementById("editDeliveryDate").value,
-      paymentCollected: parseFloat(document.getElementById("editPayment").value),
-      paymentMode: document.getElementById("editPaymentMode").value,
-      nextFollowUp: document.getElementById("editNextFollowUp").value,
-      customerType: document.getElementById("editCustomerType").value,
-      followUpReminder: document.getElementById("editReminder").value,
-      followUp: document.getElementById("editFollowUp").value,
-      notes: document.getElementById("editNotes").value
-    };
-    try {
-      await db.collection("salesData").doc(id).update(updatedData);
-      alert("Updated successfully!");
-      closeEditModal();
-      location.reload();
-    } catch (error) {
-      alert("Error updating: " + error.message);
-    }
-  });
-
+  function resetFilters() {
+    document.getElementById('filterDate').value = "";
+    document.getElementById('filterStatus').value = "";
+    document.getElementById('filterContact').value = "";
+    document.getElementById('filterParty').value = "";
+    fullData = fullData.filter(row => (row.date || '').includes('2025-04-11'));
+    renderTable(fullData);
+  }
 </script>
-
 
 </body>
 </html>
