@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Sales Data Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -30,6 +29,12 @@
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.05);
     }
+    h3 {
+      margin-top: 30px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+      color: #333;
+    }
     input, select, textarea {
       width: 100%;
       padding: 12px;
@@ -37,6 +42,9 @@
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 14px;
+    }
+    input[readonly] {
+      background-color: #f0f0f0;
     }
     button {
       margin-top: 20px;
@@ -76,6 +84,7 @@
   <header>Daily Sales Data Form</header>
 
   <form id="salesForm">
+    <h3>Contact Details</h3>
     <label>Date:</label>
     <input type="date" name="date" required>
 
@@ -87,18 +96,12 @@
     </select>
 
     <label>Party Name:</label>
-    <input type="text" name="partyName" required>
-
-    <label>Actual Amount:</label>
-    <input type="number" name="actualAmount" required>
-
-    <label>Billing Amount:</label>
-    <input type="number" name="billingAmount" required>
+    <input type="text" name="partyName" placeholder="E.g., ABC Traders" required>
 
     <label>Location Visited:</label>
     <input type="text" name="locationVisited" required>
 
-    <!-- New Fields -->
+    <h3>Visit Details</h3>
     <label>Visit Time In:</label>
     <input type="time" name="timeIn" required>
 
@@ -121,15 +124,21 @@
 
     <div id="orderDetails" class="hidden">
       <label>Order Value:</label>
-      <input type="number" name="orderValue">
+      <input type="number" name="orderValue" min="0" step="0.01">
       <label>Expected Delivery Date:</label>
       <input type="date" name="deliveryDate">
     </div>
 
-    <label>Payment Collected:</label>
-    <input type="number" name="paymentCollected">
+    <label>Actual Amount:</label>
+    <input type="number" name="actualAmount" min="0" step="0.01" required>
 
-    <label>Payment Mode:</label>
+    <label>Billing Amount:</label>
+    <input type="number" name="billingAmount" min="0" step="0.01" required>
+
+    <label>Payment Collected:</label>
+    <input type="number" name="paymentCollected" min="0" step="0.01">
+
+    <label>Payment Mode: <span style="color:#888">(optional)</span></label>
     <select name="paymentMode">
       <option value="">-- Select Mode --</option>
       <option value="Cash">Cash</option>
@@ -148,14 +157,14 @@
       <option value="Potential">Potential</option>
     </select>
 
-    <label>Reminder Notes for Follow-Up:</label>
-    <textarea name="followUpReminder" rows="2"></textarea>
+    <label>Reminder Notes for Follow-Up: <span style="color:#888">(optional)</span></label>
+    <textarea name="followUpReminder" rows="2" placeholder="E.g., Call on 18th regarding payment"></textarea>
 
-    <label>Follow-up:</label>
+    <label>Follow-up: <span style="color:#888">(optional)</span></label>
     <input type="text" name="followUp">
 
-    <label>Notes:</label>
-    <textarea name="notes" rows="3"></textarea>
+    <label>Notes: <span style="color:#888">(optional)</span></label>
+    <textarea name="notes" rows="3" placeholder="Enter any relevant notes..."></textarea>
 
     <label>Status:</label>
     <select name="status" id="statusDropdown" required>
@@ -164,7 +173,7 @@
       <option value="Ongoing">Ongoing</option>
     </select>
 
-    <button type="submit">Submit</button>
+    <button type="submit">📨 Submit</button>
   </form>
 
   <div class="nav-links">
@@ -173,6 +182,8 @@
     <a href="monthly-report.html">Monthly Report</a>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
@@ -190,6 +201,7 @@
     const statusDropdown = document.getElementById("statusDropdown");
     const orderTaken = document.getElementById("orderTaken");
     const orderDetails = document.getElementById("orderDetails");
+    const submitBtn = form.querySelector("button[type='submit']");
 
     function updateStatusColor() {
       const value = statusDropdown.value;
@@ -217,6 +229,7 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      submitBtn.disabled = true;
       const formData = new FormData(form);
       const data = {};
       const now = new Date();
@@ -228,18 +241,27 @@
       data.date = data.date || now.toISOString().slice(0, 10);
       data.timestamp = now.toISOString();
 
+      if (data.orderTaken === "Yes" && data.orderValue) {
+        data.billingAmount = parseFloat(data.orderValue);
+      }
+
       db.collection("salesData").add(data)
         .then(() => {
           alert("✅ Submitted successfully!");
           form.reset();
           updateStatusColor();
           orderDetails.classList.add("hidden");
+          submitBtn.disabled = false;
         })
         .catch((err) => {
           console.error("Error saving to Firestore:", err);
           alert("❌ Submission failed: " + err.message);
+          submitBtn.disabled = false;
         });
     });
+
+    // Autofill date field with today's date
+    document.querySelector("input[name='date']").value = new Date().toISOString().slice(0, 10);
   </script>
 </body>
 </html>
