@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sreepadma Aqua Flora - Track and manage your sales data">
-  <title>Sreepadma Aqua Flora - Sales Report</title>
+  <meta name="description" content="Track and manage your sales data">
+  <title>Sales Report</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -22,94 +22,40 @@
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Poppins', sans-serif;
       line-height: 1.6;
       color: var(--dark-color);
       background-color: #f5f7ff;
-      margin: 0;
     }
+
     
-    nav {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-      box-shadow: var(--box-shadow);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+
+    .logo img {
+      height: 50px;
     }
-    
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .logo i {
-      font-size: 1.8rem;
-    }
-    
-    .company-name {
-      font-size: 0.9rem;
-      opacity: 0.9;
-      margin-left: 5px;
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 15px;
-    }
-    
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      padding: 8px 12px;
-      border-radius: var(--border-radius);
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    nav a:hover, nav a:focus {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    
+
     .hero {
       text-align: center;
       padding: 100px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .hero h1 {
       font-size: 2.8rem;
       color: var(--primary-color);
-      margin-bottom: 15px;
+      margin-bottom: 25px;
       font-weight: 700;
     }
-    
-    .hero .company-title {
-      font-size: 1.5rem;
-      color: var(--secondary-color);
-      margin-bottom: 25px;
-      font-weight: 600;
-    }
-    
+
     .hero p {
       font-size: 1.2rem;
       color: var(--dark-color);
@@ -118,14 +64,14 @@
       margin-left: auto;
       margin-right: auto;
     }
-    
+
     .buttons {
       display: flex;
       justify-content: center;
       gap: 25px;
       flex-wrap: wrap;
     }
-    
+
     .btn {
       padding: 15px 30px;
       background: var(--primary-color);
@@ -142,28 +88,28 @@
       border: none;
       cursor: pointer;
     }
-    
+
     .btn:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
     }
-    
+
     .btn i {
       font-size: 1.2rem;
     }
-    
+
     .btn-primary {
       background: var(--primary-color);
     }
-    
+
     .btn-secondary {
       background: var(--secondary-color);
     }
-    
+
     .btn-accent {
       background: var(--accent-color);
     }
-    
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -172,7 +118,7 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .feature-card {
       background: white;
       padding: 30px;
@@ -181,23 +127,23 @@
       transition: var(--transition);
       text-align: center;
     }
-    
+
     .feature-card:hover {
       transform: translateY(-5px);
     }
-    
+
     .feature-card i {
       font-size: 2.5rem;
       color: var(--primary-color);
       margin-bottom: 20px;
     }
-    
+
     .feature-card h3 {
       font-size: 1.5rem;
       margin-bottom: 15px;
       color: var(--primary-color);
     }
-    
+
     footer {
       background: var(--dark-color);
       color: white;
@@ -205,39 +151,22 @@
       padding: 30px 20px;
       margin-top: 50px;
     }
-    
-    .footer-company {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: var(--accent-color);
-    }
-    
+
     @media (max-width: 768px) {
       nav {
         flex-direction: column;
         padding: 1rem;
       }
-      
-      .nav-links {
-        margin-top: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
+
       .hero h1 {
         font-size: 2.2rem;
       }
-      
-      .hero .company-title {
-        font-size: 1.2rem;
-      }
-      
+
       .buttons {
         flex-direction: column;
         gap: 15px;
       }
-      
+
       .btn {
         justify-content: center;
       }
@@ -246,60 +175,48 @@
 </head>
 <body>
 
-<nav>
-  <div class="logo">
-    <i class="fas fa-chart-line"></i>
-    <div>
-      <div>Sales Report</div>
-      <div class="company-name">Sreepadma Aqua Flora</div>
-    </div>
-  </div>
-  <div class="nav-links">
-    <a href="sales-form.html"><i class="fas fa-plus-circle"></i> Form</a>
-    <a href="daily-report.html"><i class="fas fa-calendar-day"></i> Daily Report</a>
-    <a href="monthly-report.html"><i class="fas fa-calendar-alt"></i> Monthly Report</a>
-  </div>
+  <nav style="background: linear-gradient(135deg, #4361ee, #3f37c9); padding: 1rem 2rem; display: flex; align-items: center; gap: 15px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <img src="unnamed.png" alt="Company Logo" style="height: 50px; width: 50px; object-fit: cover; border-radius: 10px;">
+  <h1 style="font-size: 1.5rem; margin: 0;">Sreepadma Aqua Flora</h1>
 </nav>
 
-<section class="hero">
-  <h1>Sales Data Analytics Dashboard</h1>
-  <div class="company-title">Sreepadma Aqua Flora</div>
-  <p>Track, analyze, and visualize your sales performance with our powerful reporting tools. Get real-time insights to make data-driven decisions.</p>
-  <div class="buttons">
-    <a href="sales-form.html" class="btn btn-primary">
-      <i class="fas fa-plus-circle"></i> Add Sales Entry
-    </a>
-    <a href="daily-report.html" class="btn btn-secondary">
-      <i class="fas fa-calendar-day"></i> Daily Report
-    </a>
-    <a href="monthly-report.html" class="btn btn-accent">
-      <i class="fas fa-chart-bar"></i> Monthly Analytics
-    </a>
-  </div>
-</section>
+  <section class="hero">
+    <h1>Sales Data Analytics Dashboard</h1>
+    <p>Track, analyze, and visualize your sales performance with our powerful reporting tools. Get real-time insights to make data-driven decisions.</p>
+    <div class="buttons">
+      <a href="sales-form.html" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Add Sales Entry
+      </a>
+      <a href="daily-report.html" class="btn btn-secondary">
+        <i class="fas fa-calendar-day"></i> Daily Report
+      </a>
+      <a href="monthly-report.html" class="btn btn-accent">
+        <i class="fas fa-chart-bar"></i> Monthly Analytics
+      </a>
+    </div>
+  </section>
 
-<section class="features">
-  <div class="feature-card">
-    <i class="fas fa-bolt"></i>
-    <h3>Real-time Data</h3>
-    <p>Get up-to-the-minute sales data with our live tracking system.</p>
-  </div>
-  <div class="feature-card">
-    <i class="fas fa-chart-pie"></i>
-    <h3>Visual Reports</h3>
-    <p>Beautiful charts and graphs to help you understand your sales trends.</p>
-  </div>
-  <div class="feature-card">
-    <i class="fas fa-mobile-alt"></i>
-    <h3>Mobile Friendly</h3>
-    <p>Access your sales data from anywhere on any device.</p>
-  </div>
-</section>
+  <section class="features">
+    <div class="feature-card">
+      <i class="fas fa-bolt"></i>
+      <h3>Real-time Data</h3>
+      <p>Get up-to-the-minute sales data with our live tracking system.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-chart-pie"></i>
+      <h3>Visual Reports</h3>
+      <p>Beautiful charts and graphs to help you understand your sales trends.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-mobile-alt"></i>
+      <h3>Mobile Friendly</h3>
+      <p>Access your sales data from anywhere on any device.</p>
+    </div>
+  </section>
 
-<footer>
-  <div class="footer-company">Sreepadma Aqua Flora</div>
-  <p>&copy; 2023 Sales Report System. All rights reserved.</p>
-</footer>
+  <footer>
+    <p>&copy; 2023 Sales Report System. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>
