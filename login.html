@@ -31,9 +31,9 @@
 
       sessionStorage.setItem("role", role);
 
-      if (role !== "sales") {
-        alert("Access denied. Sales team only.");
-        window.location.href = "daily-report.html";
+      if (role !== "sales" && role !== "admin") {
+        alert("Access denied.");
+        window.location.href = "login.html";
       }
     });
   </script>
