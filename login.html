@@ -164,6 +164,13 @@
       const btnText = document.getElementById("btnText");
       const loader = document.getElementById("loader");
 
+      if (!email || !password) {
+        msg.className = "error";
+        msg.textContent = "Please enter both email and password.";
+        msg.style.display = "block";
+        return;
+      }
+
       btnText.style.display = "none";
       loader.style.display = "inline-block";
       loginBtn.disabled = true;
@@ -177,6 +184,7 @@
           if (!role) {
             msg.className = "error";
             msg.textContent = "No role assigned. Contact admin.";
+            msg.style.display = "block";
             return;
           }
 
@@ -191,6 +199,7 @@
 
           msg.className = "success";
           msg.textContent = "Login successful! Redirecting...";
+          msg.style.display = "block";
 
           setTimeout(() => {
             if (role === "admin") {
@@ -203,6 +212,7 @@
         .catch(error => {
           msg.className = "error";
           msg.textContent = "Login failed: " + error.message;
+          msg.style.display = "block";
         })
         .finally(() => {
           btnText.style.display = "block";
@@ -213,4 +223,3 @@
   </script>
 </body>
 </html>
-
