@@ -31,7 +31,9 @@
 
       sessionStorage.setItem("role", role);
 
-      if (role !== "sales" && role !== "admin") {
+      if (role === "admin" || role === "sales") {
+        window.location.href = "index.html";
+      } else {
         alert("Access denied.");
         window.location.href = "login.html";
       }
