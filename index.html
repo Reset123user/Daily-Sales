@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* Original CSS remains unchanged */
     :root {
       --primary-color: #4361ee;
       --primary-dark: #3a56d4;
@@ -22,40 +23,26 @@
       --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       line-height: 1.6;
       color: var(--dark-color);
       background-color: #f5f7ff;
     }
-
-    
-
-    .logo img {
-      height: 50px;
-    }
-
+    .logo img { height: 50px; }
     .hero {
       text-align: center;
       padding: 100px 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
-
     .hero h1 {
       font-size: 2.8rem;
       color: var(--primary-color);
       margin-bottom: 25px;
       font-weight: 700;
     }
-
     .hero p {
       font-size: 1.2rem;
       color: var(--dark-color);
@@ -64,14 +51,12 @@
       margin-left: auto;
       margin-right: auto;
     }
-
     .buttons {
       display: flex;
       justify-content: center;
       gap: 25px;
       flex-wrap: wrap;
     }
-
     .btn {
       padding: 15px 30px;
       background: var(--primary-color);
@@ -88,28 +73,11 @@
       border: none;
       cursor: pointer;
     }
-
-    .btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-
-    .btn i {
-      font-size: 1.2rem;
-    }
-
-    .btn-primary {
-      background: var(--primary-color);
-    }
-
-    .btn-secondary {
-      background: var(--secondary-color);
-    }
-
-    .btn-accent {
-      background: var(--accent-color);
-    }
-
+    .btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn i { font-size: 1.2rem; }
+    .btn-primary { background: var(--primary-color); }
+    .btn-secondary { background: var(--secondary-color); }
+    .btn-accent { background: var(--accent-color); }
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -118,7 +86,6 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-
     .feature-card {
       background: white;
       padding: 30px;
@@ -127,23 +94,17 @@
       transition: var(--transition);
       text-align: center;
     }
-
-    .feature-card:hover {
-      transform: translateY(-5px);
-    }
-
+    .feature-card:hover { transform: translateY(-5px); }
     .feature-card i {
       font-size: 2.5rem;
       color: var(--primary-color);
       margin-bottom: 20px;
     }
-
     .feature-card h3 {
       font-size: 1.5rem;
       margin-bottom: 15px;
       color: var(--primary-color);
     }
-
     footer {
       background: var(--dark-color);
       color: white;
@@ -151,34 +112,27 @@
       padding: 30px 20px;
       margin-top: 50px;
     }
-
     @media (max-width: 768px) {
       nav {
         flex-direction: column;
         padding: 1rem;
       }
-
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-
+      .hero h1 { font-size: 2.2rem; }
       .buttons {
         flex-direction: column;
         gap: 15px;
       }
-
-      .btn {
-        justify-content: center;
-      }
+      .btn { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
   <nav style="background: linear-gradient(135deg, #4361ee, #3f37c9); padding: 1rem 2rem; display: flex; align-items: center; gap: 15px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-  <img src="unnamed.png" alt="Company Logo" style="height: 50px; width: 50px; object-fit: cover; border-radius: 10px;">
-  <h1 style="font-size: 1.5rem; margin: 0;">Sreepadma Aqua Flora</h1>
-</nav>
+    <img src="unnamed.png" alt="Company Logo" style="height: 50px; width: 50px; object-fit: cover; border-radius: 10px;">
+    <h1 style="font-size: 1.5rem; margin: 0;">Sreepadma Aqua Flora</h1>
+    <button onclick="logout()" style="margin-left:auto; background:#fff; color:#3f37c9; padding:8px 16px; border:none; border-radius:6px; cursor:pointer; font-weight: 600;">Logout</button>
+  </nav>
 
   <section class="hero">
     <h1>Sales Data Analytics Dashboard</h1>
@@ -218,5 +172,26 @@
     <p>&copy; 2023 Sales Report System. All rights reserved.</p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
+      authDomain: "salesreportapp-8a8e0.firebaseapp.com",
+      projectId: "salesreportapp-8a8e0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        sessionStorage.clear();
+        window.location.href = "login.html";
+      });
+    }
+  </script>
 </body>
 </html>
