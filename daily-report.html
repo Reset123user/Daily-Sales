@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Data Entry Form</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
+      authDomain: "salesreportapp-8a8e0.firebaseapp.com",
+      projectId: "salesreportapp-8a8e0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const db = firebase.firestore();
+      const doc = await db.collection("users").doc(user.uid).get();
+      const role = doc.exists ? doc.data().role : null;
+
+      sessionStorage.setItem("role", role);
+
+      if (role !== "sales") {
+        alert("Access denied. Sales team only.");
+        window.location.href = "daily-report.html";
+      }
+    });
+  </script>
+</head>
+<body>
+  <!-- Your original form content remains here -->
+</body>
+</html>
