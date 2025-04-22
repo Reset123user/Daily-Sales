@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Daily Sales Data Form - Enhanced UI</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Sales Data Form - Enhanced UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
       :root {
         --primary: #4361ee;
         --primary-dark: #3a56d4;
@@ -649,208 +648,219 @@
       }
 
     </style>
-<script async_="True" defer="True" src="https://accounts.google.com/gsi/client"></script></head>
+</head>
 <body>
-<div class="toast-notification toast-success" id="driveUploadToast" style="display:none;">
-<i class="fas fa-check-circle"></i>
-    Photo uploaded successfully to Google Drive!
-</div>
+    
+
+
 <header>
-<div class="container" style="display: flex; align-items: center; justify-content: flex-start; gap: 15px;">
-<img alt="Company Logo" src="unnamed.png" style="height: 50px; width: 50px; object-fit: cover; border-radius: 10px;"/>
-<h1 style="font-size: 1.8rem; margin: 0; color: white;">Sreepadma Aqua Flora</h1>
-</div>
-<div style="text-align: center; margin-top: 10px;">
-<h2 style="font-size: 2rem; color: white; margin: 0;">Sales Data Form</h2>
-</div>
+    <div class="container" style="display: flex; align-items: center; justify-content: flex-start; gap: 15px;">
+        <img src="unnamed.png" alt="Company Logo" style="height: 50px; width: 50px; object-fit: cover; border-radius: 10px;">
+        <h1 style="font-size: 1.8rem; margin: 0; color: white;">Sreepadma Aqua Flora</h1>
+    </div>
+    <div style="text-align: center; margin-top: 10px;">
+        <h2 style="font-size: 2rem; color: white; margin: 0;">Sales Data Form</h2>
+    </div>
 </header>
-<div class="container">
-<div class="form-container">
-<form id="salesForm" novalidate=""> <div class="form-section">
-<h3><i class="fas fa-user-tie"></i> Contact Details</h3>
-<div class="form-grid">
-<div class="form-group">
-<label for="date">Date</label>
-<input class="form-control" id="date" name="date" required="" type="date"/>
-</div>
-<div class="form-group">
-<label for="contactType">Contact Type</label>
-<select class="form-control" id="contactType" name="contactType" required="">
-<option value="">Select contact type...</option>
-<option value="Call">Call</option>
-<option value="Visit">Visit</option>
-<option value="WhatsApp">WhatsApp</option>
-</select>
-</div>
-<div class="form-group">
-<label for="partyName">Party Name</label>
-<input class="form-control" id="partyName" name="partyName" placeholder="E.g., ABC Traders" required="" type="text"/>
-</div>
-<div class="form-group">
-<label for="locationVisited">Location Visited</label>
-<input class="form-control" id="locationVisited" name="locationVisited" placeholder="E.g., Main Market" required="" type="text"/>
-</div>
-</div>
-</div>
-<div class="form-section">
-<h3><i class="fas fa-clock"></i> Visit Details</h3>
-<div class="form-grid">
-<div class="form-group">
-<label for="salesType">Sales Type</label>
-<select class="form-control" id="salesType" name="salesType" required="">
-<option value="">Select sales type...</option>
-<option value="New Order">New Order</option>
-<option value="Payment Collection">Payment Collection</option>
-<option value="Follow-up">Follow-up</option>
-<option value="Enquiry">Enquiry</option>
-<option value="Complaint">Complaint</option> <option value="Other">Other</option> </select>
-</div>
-<div class="form-group">
-<label for="orderTaken">Order Taken?</label>
-<select class="form-control" id="orderTaken" name="orderTaken" required="">
-<option value="No">No</option>
-<option value="Yes">Yes</option>
-</select>
-</div>
-</div>
-</div>
-<div class="form-section hidden" id="orderDetails">
-<h3><i class="fas fa-box-open"></i> Order Details</h3>
-<div class="form-grid">
-<div class="form-group">
-<div class="floating-label-group">
-<input class="form-control" id="orderValue" min="0" name="orderValue" placeholder=" " step="0.01" type="number"/> <label class="floating-label" for="orderValue">Order Value</label>
-</div>
-</div>
-<div class="form-group">
-<label for="deliveryDate">Expected Delivery Date</label>
-<input class="form-control" id="deliveryDate" name="deliveryDate" type="date"/>
-</div>
-</div>
-</div>
-<div class="form-section">
-<h3><i class="fas fa-money-bill-wave"></i> Financial Details</h3>
-<div class="form-grid">
-<div class="form-group">
-<div class="floating-label-group">
-<input class="form-control" id="actualAmount" min="0" name="actualAmount" placeholder=" " required="" step="0.01" type="number"/>
-<label class="floating-label" for="actualAmount">Actual Amount</label>
-</div>
-</div>
-<div class="form-group">
-<div class="floating-label-group">
-<input class="form-control" id="billingAmount" min="0" name="billingAmount" placeholder=" " required="" step="0.01" type="number"/>
-<label class="floating-label" for="billingAmount">Billing Amount</label>
-</div>
-</div>
-<div class="form-group">
-<div class="floating-label-group">
-<input class="form-control" id="paymentCollected" min="0" name="paymentCollected" placeholder=" " step="0.01" type="number"/>
-<label class="floating-label" for="paymentCollected">Payment Collected</label>
-</div>
-</div>
-<div class="form-group">
-<label for="paymentMode">Payment Mode <span class="optional">(if payment collected)</span></label>
-<select class="form-control" disabled="" id="paymentMode" name="paymentMode"> <option value="">-- Select Mode --</option>
-<option value="Cash">Cash</option>
-<option value="UPI">UPI</option>
-<option value="Cheque">Cheque</option>
-<option value="Bank Transfer">Bank Transfer</option>
-<option value="Other">Other</option>
-</select>
-</div>
-</div>
-</div>
-<div class="form-section">
-<h3><i class="fas fa-users"></i> Customer Information</h3>
-<div class="form-grid">
-<div class="form-group">
-<label for="nextFollowUp">Next Follow-Up Date</label>
-<input class="form-control" id="nextFollowUp" name="nextFollowUp" type="date"/>
-</div>
-<div class="form-group">
-<label for="customerType">Customer Type</label>
-<select class="form-control" id="customerType" name="customerType" required="">
-<option value="">Select customer type...</option>
-<option value="New">New</option>
-<option value="Existing">Existing</option>
-<option value="Potential">Potential</option>
-</select>
-</div>
-<div class="form-group">
-<label for="status">Status</label>
-<select class="form-control" id="status" name="status" required="">
-<option value="">Select status...</option>
-<option value="Pending">Pending</option>
-<option value="Done">Done</option>
-<option value="Ongoing">Ongoing</option>
-</select>
-</div>
-</div>
-</div>
-<div class="form-section">
-<h3><i class="fas fa-camera"></i> Upload Photo to Google Drive</h3>
-<div class="form-group">
-<label for="visitPhoto">Photo (Optional)</label>
-<input accept="image/*" capture="environment" class="form-control" id="visitPhoto" name="visitPhoto" type="file"/>
-<small class="optional">Take or upload a photo (will be uploaded to your Drive)</small>
-</div>
-<div class="form-group">
-<button class="btn btn-outline" onclick="tokenClient.requestAccessToken()" type="button">
-<i class="fas fa-upload"></i> Upload to Drive
-        </button>
-</div>
-</div>
-<div class="form-section">
-<h3><i class="fas fa-sticky-note"></i> Additional Information</h3>
-<div class="form-grid">
-<div class="form-group" style="grid-column: span 1 / auto;"> <label for="followUpReminder">Reminder Notes for Follow-Up <span class="optional">(optional)</span></label>
-<textarea class="form-control" id="followUpReminder" maxlength="200" name="followUpReminder" placeholder="E.g., Call on 18th regarding payment..." rows="2"></textarea>
-<div class="char-counter"><span id="followUpReminderCounter">200</span> characters remaining</div>
-</div>
-<div class="form-group" style="grid-column: span 1 / auto;">
-<label for="followUp">Follow-up Details <span class="optional">(optional)</span></label>
-<textarea class="form-control" id="followUp" maxlength="100" name="followUp" placeholder="Details of the follow-up action taken or needed..." rows="2"></textarea> <div class="char-counter"><span id="followUpCounter">100</span> characters remaining</div>
-</div>
-<div class="form-group" style="grid-column: 1 / -1;"> <label for="notes">Additional Notes <span class="optional">(optional)</span></label>
-<textarea class="form-control" id="notes" maxlength="500" name="notes" placeholder="Enter any other relevant details, observations, or context..." rows="3"></textarea>
-<div class="char-counter"><span id="notesCounter">500</span> characters remaining</div>
-</div>
-</div>
-</div>
-<div class="button-group">
-<button class="btn btn-outline" id="previewBtn" type="button">
-<i class="fas fa-eye"></i> Preview
+
+
+
+
+    <div class="container">
+        <div class="form-container">
+            <form id="salesForm" novalidate> <div class="form-section">
+                    <h3><i class="fas fa-user-tie"></i> Contact Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" name="date" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactType">Contact Type</label>
+                            <select id="contactType" name="contactType" class="form-control" required>
+                                <option value="">Select contact type...</option>
+                                <option value="Call">Call</option>
+                                <option value="Visit">Visit</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="partyName">Party Name</label>
+                            <input type="text" id="partyName" name="partyName" class="form-control" placeholder="E.g., ABC Traders" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="locationVisited">Location Visited</label>
+                            <input type="text" id="locationVisited" name="locationVisited" class="form-control" placeholder="E.g., Main Market" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-clock"></i> Visit Details</h3>
+                    <div class="form-grid">
+                        
+
+                        <div class="form-group">
+                            <label for="salesType">Sales Type</label>
+                            <select id="salesType" name="salesType" class="form-control" required>
+                                <option value="">Select sales type...</option>
+                                <option value="New Order">New Order</option>
+                                <option value="Payment Collection">Payment Collection</option>
+                                <option value="Follow-up">Follow-up</option>
+                                <option value="Enquiry">Enquiry</option>
+                                 <option value="Complaint">Complaint</option> <option value="Other">Other</option> </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="orderTaken">Order Taken?</label>
+                            <select id="orderTaken" name="orderTaken" class="form-control" required>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="orderDetails" class="form-section hidden">
+                    <h3><i class="fas fa-box-open"></i> Order Details</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <div class="floating-label-group">
+                                <input type="number" id="orderValue" name="orderValue" class="form-control" min="0" step="0.01" placeholder=" "> <label for="orderValue" class="floating-label">Order Value</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deliveryDate">Expected Delivery Date</label>
+                            <input type="date" id="deliveryDate" name="deliveryDate" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-money-bill-wave"></i> Financial Details</h3>
+                    <div class="form-grid">
+                         <div class="form-group">
+                             <div class="floating-label-group">
+                                <input type="number" id="actualAmount" name="actualAmount" class="form-control" min="0" step="0.01" placeholder=" " required>
+                                <label for="actualAmount" class="floating-label">Actual Amount</label>
+                             </div>
+                        </div>
+
+                        <div class="form-group">
+                             <div class="floating-label-group">
+                                <input type="number" id="billingAmount" name="billingAmount" class="form-control" min="0" step="0.01" placeholder=" " required>
+                                 <label for="billingAmount" class="floating-label">Billing Amount</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="floating-label-group">
+                                <input type="number" id="paymentCollected" name="paymentCollected" class="form-control" min="0" step="0.01" placeholder=" ">
+                                 <label for="paymentCollected" class="floating-label">Payment Collected</label>
+                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paymentMode">Payment Mode <span class="optional">(if payment collected)</span></label>
+                            <select id="paymentMode" name="paymentMode" class="form-control" disabled> <option value="">-- Select Mode --</option>
+                                <option value="Cash">Cash</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-users"></i> Customer Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nextFollowUp">Next Follow-Up Date</label>
+                            <input type="date" id="nextFollowUp" name="nextFollowUp" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerType">Customer Type</label>
+                            <select id="customerType" name="customerType" class="form-control" required>
+                                <option value="">Select customer type...</option>
+                                <option value="New">New</option>
+                                <option value="Existing">Existing</option>
+                                <option value="Potential">Potential</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status" class="form-control" required>
+                                <option value="">Select status...</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Done">Done</option>
+                                <option value="Ongoing">Ongoing</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-sticky-note"></i> Additional Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: span 1 / auto;"> <label for="followUpReminder">Reminder Notes for Follow-Up <span class="optional">(optional)</span></label>
+                            <textarea id="followUpReminder" name="followUpReminder" class="form-control" rows="2" placeholder="E.g., Call on 18th regarding payment..." maxlength="200"></textarea>
+                            <div class="char-counter"><span id="followUpReminderCounter">200</span> characters remaining</div>
+                        </div>
+
+                        <div class="form-group" style="grid-column: span 1 / auto;">
+                            <label for="followUp">Follow-up Details <span class="optional">(optional)</span></label>
+                             <textarea id="followUp" name="followUp" class="form-control" rows="2" placeholder="Details of the follow-up action taken or needed..." maxlength="100"></textarea> <div class="char-counter"><span id="followUpCounter">100</span> characters remaining</div>
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;"> <label for="notes">Additional Notes <span class="optional">(optional)</span></label>
+                            <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Enter any other relevant details, observations, or context..." maxlength="500"></textarea>
+                            <div class="char-counter"><span id="notesCounter">500</span> characters remaining</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="previewBtn" class="btn btn-outline">
+                        <i class="fas fa-eye"></i> Preview
                     </button>
-<button class="btn btn-primary" disabled="" id="submitBtn" type="submit">
-<i class="fas fa-paper-plane"></i> Submit (Confirm in Preview)
+                    <button type="submit" id="submitBtn" class="btn btn-primary" disabled>
+                        <i class="fas fa-paper-plane"></i> Submit (Confirm in Preview)
                     </button>
-</div>
-</form>
-</div> <div id="previewBox">
-<h4><i class="fas fa-file-alt"></i> Preview of Submitted Data</h4>
-<pre id="previewContent"></pre>
-<div class="button-group">
-<button class="btn btn-success" id="confirmBtn" onclick="confirmSubmission()">
-<i class="fas fa-check"></i> Confirm &amp; Submit
+                </div>
+            </form>
+        </div> <div id="previewBox">
+            <h4><i class="fas fa-file-alt"></i> Preview of Submitted Data</h4>
+            <pre id="previewContent"></pre>
+            <div class="button-group">
+                <button onclick="confirmSubmission()" id="confirmBtn" class="btn btn-success">
+                    <i class="fas fa-check"></i> Confirm & Submit
                 </button>
-<button class="btn btn-outline" id="editBtn" onclick="editForm()">
-<i class="fas fa-edit"></i> Edit
+                <button onclick="editForm()" id="editBtn" class="btn btn-outline">
+                    <i class="fas fa-edit"></i> Edit
                 </button>
-<button class="btn btn-danger" onclick="cancelPreview()">
-<i class="fas fa-times"></i> Cancel
+                <button onclick="cancelPreview()" class="btn btn-danger">
+                    <i class="fas fa-times"></i> Cancel
                 </button>
-</div>
-</div>
-<div class="nav-links">
-<a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-<a href="daily-report.html"><i class="fas fa-calendar-day"></i> Daily Report</a>
-<a href="monthly-report.html"><i class="fas fa-calendar-alt"></i> Monthly Report</a>
-<a href="#"><i class="fas fa-cog"></i> Settings</a>
-</div>
-</div> <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="daily-report.html"><i class="fas fa-calendar-day"></i> Daily Report</a>
+            <a href="monthly-report.html"><i class="fas fa-calendar-alt"></i> Monthly Report</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </div>
+    </div> <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyACT343i6iFJzQn1ztzQ6ABWcBY3v0LRmE",
             authDomain: "salesreportapp-8a8e0.firebaseapp.com",
@@ -1008,9 +1018,7 @@
                  // setTimeout(() => field.classList.remove('highlight'), 1500);
              }
 
-                             clearError('timeOut'); // Clear error if valid
-                return true;
-            }
+             
 
             function validatePayment() {
                 const paymentCollectedInput = document.getElementById('paymentCollected');
@@ -1322,58 +1330,5 @@
 
         }); // End DOMContentLoaded
     </script>
-
-
-<script>
-let accessToken = null;
-let tokenClient = null;
-
-window.onload = () => {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: '969416135750-cjnb1s0jq8i2vnnpiih7rc1j2pha2uvn.apps.googleusercontent.com',
-        scope: 'https://www.googleapis.com/auth/drive.file',
-        callback: (tokenResponse) => {
-            accessToken = tokenResponse.access_token;
-            console.log("Access token received:", accessToken);
-
-            const fileInput = document.getElementById('visitPhoto');
-            if (fileInput?.files[0]) {
-                uploadToDrive(fileInput.files[0], accessToken);
-            } else {
-                showToast("No file selected for upload.", "error");
-            }
-        },
-    });
-};
-
-async function uploadToDrive(file, accessToken) {
-    const metadata = {
-        name: file.name,
-        mimeType: file.type
-    };
-
-    const form = new FormData();
-    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
-    form.append("file", file);
-
-    const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
-        method: "POST",
-        headers: new Headers({ Authorization: "Bearer " + accessToken }),
-        body: form,
-    });
-
-    const fileData = await res.json();
-    console.log("File uploaded:", fileData);
-
-    const toast = document.getElementById('driveUploadToast');
-    toast.innerHTML = `<i class="fas fa-check-circle"></i> Photo uploaded successfully! <br><a href='https://drive.google.com/file/d/${fileData.id}/view' target='_blank'>View Photo</a>`;
-    toast.style.display = 'flex';
-    toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-        toast.style.display = 'none';
-    }, 5000);
-}
-</script>
 </body>
 </html>
